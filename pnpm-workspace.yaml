@@ -1,0 +1,4 @@
+packages:
+  - 'calendar-react'
+  - 'calendar-vue3'
+  - 'assets'

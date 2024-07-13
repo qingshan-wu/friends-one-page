@@ -1,0 +1,23 @@
+{
+  "name": "calendar-vue3",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vue-tsc -b && vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "dayjs": "^1.11.11",
+    "lunisolar": "^2.5.0",
+    "vue": "^3.4.29",
+    "assets": "workspace:assets"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "typescript": "^5.2.2",
+    "vite": "^5.3.1",
+    "vue-tsc": "^2.0.21"
+  }
+}

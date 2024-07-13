@@ -1,0 +1,15 @@
+{
+  "name": "calendar-mono",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:calendar-vue3": "pnpm --filter calendar-vue3 run dev",
+    "dev:calendar-react": "pnpm --filter calendar-react run dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "private": true
+}
