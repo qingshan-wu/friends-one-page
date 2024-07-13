@@ -6,10 +6,15 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:calendar-vue3": "pnpm --filter calendar-vue3 run dev",
-    "dev:calendar-react": "pnpm --filter calendar-react run dev"
+    "dev:calendar-react": "pnpm --filter calendar-react run dev",
+    "dev:server": "pnpm --filter server run dev"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "private": true
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.3.2",
+    "prettier-plugin-tailwindcss": "^0.6.5"
+  }
 }

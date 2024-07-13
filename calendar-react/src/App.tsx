@@ -12,11 +12,7 @@ dayjs.extend(relativeTime)
 dayjs.locale('zh-cn')
 
 function App() {
-  return (
-    <div>
-      <Page />
-    </div>
-  )
+  return <Page />
 }
 
 export default App
