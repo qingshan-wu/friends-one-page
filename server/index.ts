@@ -17,12 +17,14 @@ const daySchema = new mongoose.Schema({
 const Day = mongoose.model('Day', daySchema)
 
 const app = new Koa()
-const router = new Router()
+const date = new Router({
+  prefix: '/date',
+})
 
 // 定义一个简单的路由
-router.get('/hello', async (ctx) => {
+date.post('/update', async (ctx) => {
   const demoDay = new Day({
-    date: 'demo',
+    date: 'demoxx',
     lunisolar: '例子',
     img: 'xxx',
     slogan: '标语',
@@ -30,12 +32,17 @@ router.get('/hello', async (ctx) => {
     bad: '忌',
     memo: '备注',
   })
-  await demoDay.save()
-  ctx.body = 'Hello, World!'
+  demoDay
+    .save()
+    .catch(console.error)
+    .finally(() => {
+      console.log('copy that! already writed. over')
+    })
+  ctx.body = 'Hello, World! xx'
 })
 
-app.use(router.routes()).use(router.allowedMethods())
+app.use(date.routes()).use(date.allowedMethods())
 
 app.listen(3000, () => {
-  console.log('Server is running on port 3000')
+  console.log('Server is running on port 3000. over')
 })

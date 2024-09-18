@@ -9,15 +9,22 @@
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
+  "engines": {
+    "node": ">=20.10.0"
+  },
   "dependencies": {
+    "@internationalized/date": "^3.5.5",
+    "@nextui-org/react": "^2.4.6",
+    "assets": "workspace:assets",
     "autoprefixer": "^10.4.19",
-    "dayjs": "^1.11.11",
+    "dayjs": "^1.11.12",
+    "framer-motion": "^11.3.28",
     "less": "^4.2.0",
     "lunisolar": "^2.5.0",
     "postcss": "^8.4.38",
+    "rc-field-form": "^2.4.0",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "assets": "workspace:assets"
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.66",
@@ -30,6 +37,7 @@
     "eslint-plugin-react-refresh": "^0.4.6",
     "tailwindcss": "^3.4.4",
     "typescript": "^5.2.2",
-    "vite": "^5.2.0"
+    "vite": "^5.2.0",
+    "vite-plugin-svgr": "^4.2.0"
   }
 }
