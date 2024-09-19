@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { screenshot } from 'assets'
 import AngleSmallDown from './angle-small-down.svg'
 import dayjs from 'dayjs'
@@ -6,55 +6,30 @@ import lunisolar from 'lunisolar'
 import { DatePicker } from '@nextui-org/react'
 import { parseDate, getLocalTimeZone } from '@internationalized/date'
 
-const en = {
-  subtitle: 'Welcome to the real world，it sucks. You’re gonna love it.',
-  subtitleCn: '欢迎来到现实世界，它糟透了，你会喜欢的',
-}
-
-function Page() {
+function Page({ subtitle = '', subtitleCn = '' }: { subtitle?: string; subtitleCn?: string }) {
   const [day, setDay] = useState(() => dayjs())
   const lsr = lunisolar(day.valueOf())
   const dd = Math.abs(day.diff('2026-01-01', 'day'))
   const acts = lsr.theGods.getActs()
 
   const [pic, setPic] = useState(screenshot)
-  const [subtitle, setSubtitle] = useState(en.subtitle)
-  const [subtitleCn, setSubtitleCn] = useState(en.subtitleCn)
   const [good, setGood] = useState<string>(() => acts.good.slice(0, 4).join('，').substring(0, 4))
 
-  useEffect(() => {
-    fetch('/date/update', {
-      method: 'POST',
-    }).then(console.log)
-  }, [])
+  // useEffect(() => {
+  //   fetch('/date/update', {
+  //     method: 'POST',
+  //   }).then(console.log)
+  // }, [])
 
   return (
-    <div className="relative m-auto w-[132mm]">
+    <div className="relative ml-64 w-[132mm]">
       <div className="relative h-[213mm] w-[132mm] overflow-hidden shadow-2xl">
         <p className="mt-20 h-[340px] w-full">
           <img src={pic} />
         </p>
         <div className="mt-14 box-content grow px-6 text-right">
-          <div
-            className="text-l ml-auto w-[305px]"
-            key={subtitle}
-            contentEditable
-            onBlur={(e) => {
-              setSubtitle(e.target.textContent || '')
-            }}
-          >
-            {subtitle}
-          </div>
-          <div
-            className="text-l ml-auto mt-1 w-[305px]"
-            key={subtitleCn}
-            contentEditable
-            onBlur={(e) => {
-              setSubtitleCn(e.target.textContent || '')
-            }}
-          >
-            {subtitleCn}
-          </div>
+          <div className="text-l ml-auto w-[305px]">{subtitle}</div>
+          <div className="text-l ml-auto mt-1 w-[305px]">{subtitleCn}</div>
         </div>
         <div className="absolute bottom-0 h-[56mm] w-full flex-col justify-between px-6">
           <div className="flex items-baseline justify-between">
@@ -127,6 +102,7 @@ function Page() {
           }}
         >
           <AngleSmallDown
+            // @ts-expect-error hack
             width="60"
             height="60"
             class="rotate-180"
@@ -139,6 +115,7 @@ function Page() {
           }}
         >
           <AngleSmallDown
+            // @ts-expect-error hack
             width="60"
             height="60"
           />

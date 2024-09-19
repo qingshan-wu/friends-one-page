@@ -7,6 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:calendar-vue3": "pnpm --filter calendar-vue3 run dev",
     "dev:calendar-react": "pnpm --filter calendar-react run dev",
+    "build:calendar-react": "pnpm --filter calendar-react run build",
     "dev:server": "pnpm --filter server run dev"
   },
   "keywords": [],
