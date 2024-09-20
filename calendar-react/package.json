@@ -19,7 +19,9 @@
     "assets": "workspace:assets",
     "autoprefixer": "^10.4.19",
     "dayjs": "^1.11.12",
+    "file-saver": "^2.0.5",
     "framer-motion": "^11.3.28",
+    "html2canvas": "^1.4.1",
     "less": "^4.2.0",
     "lodash-es": "^4.17.21",
     "lunisolar": "^2.5.0",
@@ -29,6 +31,7 @@
     "react-sticky-box": "^2.0.5"
   },
   "devDependencies": {
+    "@types/file-saver": "^2.0.7",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@typescript-eslint/eslint-plugin": "^7.2.0",

@@ -13,6 +13,10 @@ export type Sentence = {
   slices: string[]
 }
 
+export type Value = Sentence & {
+  episode: string
+}
+
 type SubTitles = Record<string, Sentence[]>
 
 // const subtitles: SubTitles = JSON.parse(friendsSubtitles as string)
@@ -81,7 +85,7 @@ const seasonsPremiereDates = (() => {
   return desc
 })()
 
-function Subtitle({ onChange }: { onChange: (s: Sentence) => void }) {
+function Subtitle({ onChange }: { onChange: (s: Value) => void }) {
   const [cs, setCs] = useState('S01')
   const [ce, setCe] = useState('E01')
 
@@ -141,7 +145,7 @@ function Subtitle({ onChange }: { onChange: (s: Sentence) => void }) {
                       actions={[
                         <Button
                           onClick={() => {
-                            onChange(dia)
+                            onChange({ ...dia, episode: `${currentSeason}-${currentEpisode}` })
                           }}
                         >
                           ✔️

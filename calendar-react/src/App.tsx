@@ -8,7 +8,7 @@ import theGods from 'lunisolar/plugins/theGods'
 import lunisolar from 'lunisolar'
 // import { useEffect } from 'react'
 import { NextUIProvider } from '@nextui-org/react'
-import Subtitle, { Sentence } from './Subtitle'
+import Subtitle, { Value } from './Subtitle'
 import { useState } from 'react'
 // 加载插件
 lunisolar.extend(theGods)
@@ -23,7 +23,7 @@ dayjs.locale('zh-cn')
 // }
 
 function App() {
-  const [subtitle, setSubtitle] = useState<Sentence>()
+  const [subtitle, setSubtitle] = useState<Value>()
   // useEffect(() => {
   //   if ('serviceWorker' in navigator) {
   //     navigator.serviceWorker
@@ -45,6 +45,7 @@ function App() {
           <Page
             subtitleCn={subtitle?.slices[0]}
             subtitle={subtitle?.slices[1]}
+            currentEpisode={subtitle?.episode}
           />
         </div>
       </NextUIProvider>

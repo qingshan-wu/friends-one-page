@@ -1,12 +1,21 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { screenshot } from 'assets'
 import AngleSmallDown from './angle-small-down.svg'
 import dayjs from 'dayjs'
 import lunisolar from 'lunisolar'
 import { DatePicker } from '@nextui-org/react'
 import { parseDate, getLocalTimeZone } from '@internationalized/date'
+import html2canvas from 'html2canvas'
 
-function Page({ subtitle = '', subtitleCn = '' }: { subtitle?: string; subtitleCn?: string }) {
+function Page({
+  subtitle = '',
+  subtitleCn = '',
+  currentEpisode = '',
+}: {
+  currentEpisode?: string
+  subtitle?: string
+  subtitleCn?: string
+}) {
   const [day, setDay] = useState(() => dayjs())
   const lsr = lunisolar(day.valueOf())
   const dd = Math.abs(day.diff('2026-01-01', 'day'))
@@ -14,6 +23,28 @@ function Page({ subtitle = '', subtitleCn = '' }: { subtitle?: string; subtitleC
 
   const [pic, setPic] = useState(screenshot)
   const [good, setGood] = useState<string>(() => acts.good.slice(0, 4).join('，').substring(0, 4))
+
+  const pageRef = useRef<HTMLDivElement>(null)
+  function saveAsImg() {
+    // const date = {
+    //   subtitle,
+    //   subtitleCn,
+    //   good,
+    //   day,
+    // }
+    // console.log(date)
+    const pageNode = pageRef.current
+    if (pageNode) {
+      html2canvas(pageNode).then((canvas) => {
+        const name = `${day.format('YYYY-MM-DD ddd')}【${subtitleCn}】【${currentEpisode}】.png`
+        const imgData = canvas.toDataURL('image/png')
+        const a = document.createElement('a')
+        a.href = imgData
+        a.download = name
+        a.click()
+      })
+    }
+  }
 
   // useEffect(() => {
   //   fetch('/date/update', {
@@ -23,43 +54,48 @@ function Page({ subtitle = '', subtitleCn = '' }: { subtitle?: string; subtitleC
 
   return (
     <div className="relative ml-64 w-[132mm]">
-      <div className="relative h-[213mm] w-[132mm] overflow-hidden shadow-2xl">
-        <p className="mt-20 h-[340px] w-full">
-          <img src={pic} />
-        </p>
-        <div className="mt-14 box-content grow px-6 text-right">
-          <div className="text-l ml-auto w-[305px]">{subtitle}</div>
-          <div className="text-l ml-auto mt-1 w-[305px]">{subtitleCn}</div>
-        </div>
-        <div className="absolute bottom-0 h-[56mm] w-full flex-col justify-between px-6">
-          <div className="flex items-baseline justify-between">
-            <div className="text-[80px]">{day.format('DD')}</div>
-            <div>
-              <span className="mr-2 text-2xl">宜</span>
-              <span
-                contentEditable
-                key={good}
-                onBlur={(e) => {
-                  setGood(e.target.textContent || '')
-                }}
-              >
-                {good}
-              </span>
-            </div>
-            <div>元旦</div>
+      <div className="shadow-2xl">
+        <div
+          ref={pageRef}
+          className="relative h-[213mm] w-[132mm] overflow-hidden bg-white"
+        >
+          <p className="mt-20 h-[340px] w-full">
+            <img src={pic} />
+          </p>
+          <div className="mt-14 box-content grow px-6 text-right">
+            <div className="text-l ml-auto w-[305px]">{subtitle}</div>
+            <div className="text-l ml-auto mt-1 w-[305px]">{subtitleCn}</div>
           </div>
-          <div className="flex items-end justify-between">
-            <div className="">
+          <div className="absolute bottom-0 h-[56mm] w-full flex-col justify-between px-6">
+            <div className="flex items-baseline justify-between">
+              <div className="text-[80px]">{day.format('DD')}</div>
               <div>
-                <span>{day.format('YYYY年M月')}</span>
-                <span>{day.format('dddd')}</span>
+                <span className="mr-2 text-2xl">宜</span>
+                <span
+                  contentEditable
+                  key={good}
+                  onBlur={(e) => {
+                    setGood(e.target.textContent || '')
+                  }}
+                >
+                  {good}
+                </span>
               </div>
-              <div>农历{lsr.format('lMlD')}</div>
+              <div>元旦</div>
             </div>
-            <div>距离2026年还有{dd}天</div>
-            <div>SEASON1-01</div>
+            <div className="flex items-end justify-between">
+              <div className="">
+                <div>
+                  <span>{day.format('YYYY年M月')}</span>
+                  <span>{day.format('dddd')}</span>
+                </div>
+                <div>农历{lsr.format('lMlD')}</div>
+              </div>
+              <div>距离2026年还有{dd}天</div>
+              <div>{currentEpisode}</div>
+            </div>
+            {/* <div>忌：{acts.bad.slice(0, 4).join('，')}</div> */}
           </div>
-          {/* <div>忌：{acts.bad.slice(0, 4).join('，')}</div> */}
         </div>
       </div>
       <div className="absolute -left-24 top-0 z-20">
@@ -131,15 +167,7 @@ function Page({ subtitle = '', subtitleCn = '' }: { subtitle?: string; subtitleC
       </div>
       <button
         className="relative m-auto mt-14 block w-[132mm] select-none border-2"
-        onClick={() => {
-          const date = {
-            subtitle,
-            subtitleCn,
-            good,
-            day,
-          }
-          console.log(date)
-        }}
+        onClick={saveAsImg}
       >
         保存
       </button>
