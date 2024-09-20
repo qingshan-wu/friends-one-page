@@ -18,6 +18,7 @@
     "antd": "^5.20.6",
     "assets": "workspace:assets",
     "autoprefixer": "^10.4.19",
+    "date-holidays": "^3.23.12",
     "dayjs": "^1.11.12",
     "file-saver": "^2.0.5",
     "framer-motion": "^11.3.28",

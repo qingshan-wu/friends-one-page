@@ -10,6 +10,12 @@ import lunisolar from 'lunisolar'
 import { NextUIProvider } from '@nextui-org/react'
 import Subtitle, { Value } from './Subtitle'
 import { useState } from 'react'
+
+import locale from 'antd/locale/zh_CN'
+
+import 'dayjs/locale/zh-cn'
+import { ConfigProvider } from 'antd'
+dayjs.locale('zh-cn')
 // 加载插件
 lunisolar.extend(theGods)
 
@@ -36,7 +42,7 @@ function App() {
   //   }
   // }, [])
   return (
-    <>
+    <ConfigProvider locale={locale}>
       <NextUIProvider>
         <div className="flex">
           <div className="ml-10">
@@ -49,7 +55,7 @@ function App() {
           />
         </div>
       </NextUIProvider>
-    </>
+    </ConfigProvider>
   )
 }
 

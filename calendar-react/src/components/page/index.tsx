@@ -1,11 +1,17 @@
-import { useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { screenshot } from 'assets'
 import AngleSmallDown from './angle-small-down.svg'
 import dayjs from 'dayjs'
 import lunisolar from 'lunisolar'
-import { DatePicker } from '@nextui-org/react'
-import { parseDate, getLocalTimeZone } from '@internationalized/date'
+// import { DatePicker } from '@nextui-org/react'
+// import { parseDate, getLocalTimeZone } from '@internationalized/date'
 import html2canvas from 'html2canvas'
+import { DatePicker } from 'antd'
+import Holidays from 'date-holidays'
+
+const hd = new Holidays('CN')
+hd.getHolidays(2025)
+hd.getHolidays(2024)
 
 function Page({
   subtitle = '',
@@ -26,24 +32,18 @@ function Page({
 
   const pageRef = useRef<HTMLDivElement>(null)
   function saveAsImg() {
-    // const date = {
-    //   subtitle,
-    //   subtitleCn,
-    //   good,
-    //   day,
-    // }
-    // console.log(date)
     const pageNode = pageRef.current
-    if (pageNode) {
-      html2canvas(pageNode).then((canvas) => {
-        const name = `${day.format('YYYY-MM-DD ddd')}【${subtitleCn}】【${currentEpisode}】.png`
-        const imgData = canvas.toDataURL('image/png')
-        const a = document.createElement('a')
-        a.href = imgData
-        a.download = name
-        a.click()
-      })
+    if (!pageNode) {
+      return
     }
+    html2canvas(pageNode).then((canvas) => {
+      const name = `${day.format('YYYY-MM-DD ddd')}【${subtitleCn}】【${currentEpisode}】.png`
+      const imgData = canvas.toDataURL('image/png')
+      const a = document.createElement('a')
+      a.href = imgData
+      a.download = name
+      a.click()
+    })
   }
 
   // useEffect(() => {
@@ -51,6 +51,16 @@ function Page({
   //     method: 'POST',
   //   }).then(console.log)
   // }, [])
+  const holiday = useMemo(() => hd.isHoliday(day.toDate()), [day])
+  const holidayName = useMemo(() => {
+    if (holiday) {
+      const name = holiday[0].name
+      if (name.length > 2) {
+        return holiday[0].name.replace('节', '')
+      }
+      return name
+    }
+  }, [holiday])
 
   return (
     <div className="relative ml-64 w-[132mm]">
@@ -81,7 +91,8 @@ function Page({
                   {good}
                 </span>
               </div>
-              <div>元旦</div>
+              <div>{holiday && holidayName}</div>
+              {lsr.solarTerm?.toString()}
             </div>
             <div className="flex items-end justify-between">
               <div className="">
@@ -124,11 +135,8 @@ function Page({
       <div className="absolute -left-24 bottom-28 z-20">
         <div className="relative -left-20">
           <DatePicker
-            label="日期"
-            value={parseDate(day.format('YYYY-MM-DD'))}
-            onChange={(value) => {
-              setDay(dayjs(value.toDate(getLocalTimeZone())))
-            }}
+            value={day}
+            onChange={setDay}
           />
         </div>
         <div
