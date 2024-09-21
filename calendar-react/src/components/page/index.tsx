@@ -8,20 +8,13 @@ import lunisolar from 'lunisolar'
 import html2canvas from 'html2canvas'
 import { DatePicker } from 'antd'
 import Holidays from 'date-holidays'
+import { Value } from '../../Subtitle'
 
 const hd = new Holidays('CN')
 hd.getHolidays(2025)
 hd.getHolidays(2024)
 
-function Page({
-  subtitle = '',
-  subtitleCn = '',
-  currentEpisode = '',
-}: {
-  currentEpisode?: string
-  subtitle?: string
-  subtitleCn?: string
-}) {
+function Page({ subs }: { subs: Value[] }) {
   const [day, setDay] = useState(() => dayjs())
   const lsr = lunisolar(day.valueOf())
   const dd = Math.abs(day.diff('2026-01-01', 'day'))
@@ -30,6 +23,9 @@ function Page({
   const [pic, setPic] = useState(screenshot)
   const [good, setGood] = useState<string>(() => acts.good.slice(0, 4).join('，').substring(0, 4))
 
+  const subtitleCn = subs.map((s) => s.slices[0]).join(' ')
+  const subtitle = subs.map((s) => s.slices[1]).join(' ')
+  const currentEpisode = subs[0]?.episode
   const pageRef = useRef<HTMLDivElement>(null)
   function saveAsImg() {
     const pageNode = pageRef.current

@@ -29,7 +29,7 @@ dayjs.locale('zh-cn')
 // }
 
 function App() {
-  const [subtitle, setSubtitle] = useState<Value>()
+  const [subs, setSubs] = useState<Value[]>([])
   // useEffect(() => {
   //   if ('serviceWorker' in navigator) {
   //     navigator.serviceWorker
@@ -44,15 +44,11 @@ function App() {
   return (
     <ConfigProvider locale={locale}>
       <NextUIProvider>
-        <div className="flex">
+        <div className="mt-6 flex">
           <div className="ml-10">
-            <Subtitle onChange={setSubtitle} />
+            <Subtitle onChange={setSubs} />
           </div>
-          <Page
-            subtitleCn={subtitle?.slices[0]}
-            subtitle={subtitle?.slices[1]}
-            currentEpisode={subtitle?.episode}
-          />
+          <Page subs={subs} />
         </div>
       </NextUIProvider>
     </ConfigProvider>
