@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { screenshot } from 'assets'
-import AngleSmallDown from './angle-small-down.svg'
+import AngleSmallDown from './angle-small-down.svg?react'
 import dayjs from 'dayjs'
 import lunisolar from 'lunisolar'
 // import { DatePicker } from '@nextui-org/react'
@@ -142,10 +142,9 @@ function Page({ subs }: { subs: Value[] }) {
           }}
         >
           <AngleSmallDown
-            // @ts-expect-error hack
             width="60"
             height="60"
-            class="rotate-180"
+            className="rotate-180"
           />
         </div>
         <div
@@ -155,7 +154,6 @@ function Page({ subs }: { subs: Value[] }) {
           }}
         >
           <AngleSmallDown
-            // @ts-expect-error hack
             width="60"
             height="60"
           />
