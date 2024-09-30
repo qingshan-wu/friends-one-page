@@ -16,17 +16,35 @@ hd.getHolidays(2024)
 
 function Page({ subs }: { subs: Value[] }) {
   const [day, setDay] = useState(() => dayjs())
-  const lsr = lunisolar(day.valueOf())
-  const dd = Math.abs(day.diff('2026-01-01', 'day'))
-  const acts = lsr.theGods.getActs()
-
+  const lsr = useMemo(() => lunisolar(day.valueOf()), [day])
+  const dd = useMemo(() => Math.abs(day.diff('2026-01-01', 'day')), [day])
+  const acts = useMemo(() => lsr.theGods.getActs(), [lsr])
   const [pic, setPic] = useState(screenshot)
-  const [good, setGood] = useState<string>(() => acts.good.slice(0, 4).join('，').substring(0, 4))
-
+  const [good, setGood] = useState(generateGoodStr)
   const subtitleCn = subs.map((s) => s.slices[0]).join(' ')
   const subtitle = subs.map((s) => s.slices[1]).join(' ')
   const currentEpisode = subs[0]?.episode
   const pageRef = useRef<HTMLDivElement>(null)
+  const holiday = useMemo(() => hd.isHoliday(day.toDate()), [day])
+  const holidayName = useMemo(() => {
+    if (holiday) {
+      const name = holiday[0].name
+      if (name.length > 2) {
+        return holiday[0].name.replace('节', '')
+      }
+      return name
+    }
+  }, [holiday])
+
+  function generateGoodStr() {
+    return acts.good.slice(0, 4).join('，').substring(0, 4)
+  }
+
+  function updateGood() {
+    console.log(acts.good.join('\n'))
+    setGood(generateGoodStr)
+  }
+
   function saveAsImg() {
     const pageNode = pageRef.current
     if (!pageNode) {
@@ -42,21 +60,19 @@ function Page({ subs }: { subs: Value[] }) {
     })
   }
 
+  function uploadImg(e: React.ChangeEvent<HTMLInputElement>) {
+    const imgFile = e.target.files?.[0]
+    if (imgFile) {
+      const url = URL.createObjectURL(imgFile)
+      setPic(url)
+    }
+  }
+
   // useEffect(() => {
   //   fetch('/date/update', {
   //     method: 'POST',
   //   }).then(console.log)
   // }, [])
-  const holiday = useMemo(() => hd.isHoliday(day.toDate()), [day])
-  const holidayName = useMemo(() => {
-    if (holiday) {
-      const name = holiday[0].name
-      if (name.length > 2) {
-        return holiday[0].name.replace('节', '')
-      }
-      return name
-    }
-  }, [holiday])
 
   return (
     <div className="relative ml-64 w-[132mm]">
@@ -118,13 +134,7 @@ function Page({ subs }: { subs: Value[] }) {
             id="upload"
             type="file"
             accept="image/png, image/jpeg"
-            onChange={(e) => {
-              const imgFile = e.target.files?.[0]
-              if (imgFile) {
-                const url = URL.createObjectURL(imgFile)
-                setPic(url)
-              }
-            }}
+            onChange={uploadImg}
           />
         </div>
       </div>
@@ -160,9 +170,7 @@ function Page({ subs }: { subs: Value[] }) {
         </div>
         <button
           className="flex size-16 cursor-pointer select-none items-center justify-center rounded-full border-2 text-2xl"
-          onClick={() => {
-            setGood(acts.good.slice(0, 4).join('，').substring(0, 4))
-          }}
+          onClick={updateGood}
         >
           宜
         </button>

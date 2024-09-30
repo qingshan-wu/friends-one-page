@@ -20,7 +20,7 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true,
 
-    // dayjs
+    // lunisolar
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
   },
